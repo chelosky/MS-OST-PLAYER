@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="color1">#424549</color>
+    <color name="color2">#7e455e</color>
+    <color name="color3">#796e25</color>
+    <color name="color4">#59717c</color>
+
+    <color name="red0">#D35B5B</color>
+    <color name="green0">#60B21E</color>
+    <color name="blue0">#5BA0D3</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white1">#eeeeee</color>
+    <color name="black">#000000</color>
+    <color name="black1">#313a4d</color>
+    <color name="gray">#808080</color>
+    <color name="gray1">#dbdbdb</color>
+    <color name="gray2">#ababab</color>
+    <color name="gray3">#ededed</color>
+    <color name="red">#FF0000</color>
+    <color name="red1">#db2627</color>
+    <color name="red2">#db2829</color>
+    <color name="red3">#22FF0000</color>
+    <color name="red4">#88FF0000</color>
+    <color name="red5">#aaFF0000</color>
+    <color name="gold">#FFD700</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#008000</color>
+    <color name="green1">#22008000</color>
+    <color name="green2">#88008000</color>
+    <color name="green3">#aa008000</color>
+    <color name="blue">#0000FF</color>
+    <color name="blue1">#2095ac</color>
+    <color name="blue2">#2398bc</color>
+    <color name="purple">#800080</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="orange">#FFA500</color>
+    <color name="lemonyellow">#FFFACD</color>
+    <color name="graywhite">#F5F5F5</color>
+    <color name="grayslate">#708090</color>
+    <color name="lightblue">#0083FF</color>
+    <color name="lightblue2">#CCCCCC</color>
+    <color name="full_transparent">#00000000</color>
+    <color name="half_transparent">#aa000000</color>
+
+    <color name="listitem_black">#ff000000</color>
+    <color name="listitem_gray">#ff9da19e</color>
+
+    <color name="deep_gray">#ff3f3f3f</color>
+    <color name="text_gray">#ff999999</color>
+
+
+    <color name="sliding_menu_back">#ff2c2c2e</color>
+    <color name="sliding_menu_title_text_color">#ff999999</color>
+    <color name="sliding_menu_item_text_color">#ffb1b1b1</color>
+    <color name="sliding_menu_item_text_color_pressed">#ffffffff</color>
+    <color name="sliding_menu_item_pressed">#ff39393b</color>
+    <color name="sliding_menu_item">#00000000</color>
+
+</resources>
