@@ -1,33 +1,33 @@
 package com.chelosky.msostplayer.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.RippleDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.chelosky.msostplayer.R;
 import com.chelosky.msostplayer.activities.MenuActivity;
-import com.chelosky.msostplayer.models.itemMainModel;
+import com.chelosky.msostplayer.models.ItemMainModel;
 
 import java.util.List;
 
 public class itemMainAdapter extends PagerAdapter {
 
-    private List<itemMainModel> listModels;
+    private List<ItemMainModel> listModels;
     private LayoutInflater layoutInflater;
     private Context context;
 
 
-    public itemMainAdapter(Context context, List<itemMainModel> listModels) {
+    public itemMainAdapter(Context context, List<ItemMainModel> listModels) {
         this.listModels = listModels;
         this.context = context;
     }
@@ -57,7 +57,18 @@ public class itemMainAdapter extends PagerAdapter {
         title = (TextView) view.findViewById(R.id.txtTitle);
         desc = (TextView) view.findViewById(R.id.txtDescription);
 
-        imageView.setImageResource(listModels.get(position).getImage());
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+
+        //imageView.setImageResource(listModels.get(position).getImage());
+        Glide.with(context)
+                .load(listModels.get(position).getImage())
+                .placeholder(circularProgressDrawable)
+                .skipMemoryCache(true)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView);
         title.setText(listModels.get(position).getTitle());
         desc.setText(listModels.get(position).getDescription());
 
@@ -65,7 +76,7 @@ public class itemMainAdapter extends PagerAdapter {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MenuActivity)context).OpenElementOst(position);
+                ((MenuActivity)context).OpenElementOst(position, listModels.get(position));
             }
         });
 

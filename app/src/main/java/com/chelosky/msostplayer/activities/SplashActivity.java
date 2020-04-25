@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.chelosky.msostplayer.R;
+import com.chelosky.msostplayer.helpers.UserPreferencesHelper;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -16,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        UserPreferencesHelper.initializeUserPreferences(SplashActivity.this);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
