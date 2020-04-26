@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chelosky.msostplayer.R;
+import com.chelosky.msostplayer.helpers.DownloaderHelper;
 import com.chelosky.msostplayer.helpers.IOHelper;
+import com.chelosky.msostplayer.helpers.SoundPlayerHelper;
 import com.chelosky.msostplayer.helpers.UserPreferencesHelper;
 import com.chelosky.msostplayer.models.SoundModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,6 +29,8 @@ public class ItemSoundAdapter extends RecyclerView.Adapter<ItemSoundAdapter.Soun
     private Context context;
     private List<SoundModel> soundModelList;
     private String folderOst;
+    private SoundHolder currentHolder = null;
+    private SoundModel currentModel = null;
 
     public ItemSoundAdapter(Context context, List<SoundModel> soundModelList, String folderOst) {
         this.context = context;
@@ -43,44 +47,80 @@ public class ItemSoundAdapter extends RecyclerView.Adapter<ItemSoundAdapter.Soun
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SoundHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final SoundHolder holder, final int position) {
         SoundModel soundModel = soundModelList.get(position);
         holder.name.setText(soundModel.getName());
         if(soundModel.getName().length() >= 35){;
             holder.name.setTextSize(15);
         }
         holder.information.setText(soundModel.getInformation());
-        if(checkSound(soundModel.getNameFile())){
-            holder.btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.baseline_play_arrow_white_48dp));
-        }else{
-            holder.btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.baseline_get_app_white_48dp));
-        }
+        holder.UpdateIconDownload(checkSound(soundModel.getNameFile()));
         holder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!checkSound(soundModelList.get(position).getNameFile())){
-                    IOHelper.createExternalFolder(UserPreferencesHelper.getNameFolderDownloads(context)
-                            + "/" + folderOst + "/");
-                    DownloadFile(UserPreferencesHelper.getNameFolderDownloads(context)
-                            + "/" + folderOst + "/" + soundModelList.get(position).getNameFile());
+                SoundModel ost = soundModelList.get(position);
+                if(!checkSound(ost.getNameFile())){
+                    IOHelper.createExternalFolder(getFolderPath());
+                    DownloadFile(holder ,getPathFile(ost.getNameFile()), ost);
                 }else{
-                    Play();
+                    holder.ChangePlaying();
+                    // SI ES NULL SIGNIFICA QUE NO HAY NADA REPRODUCIENDO
+                    if(currentHolder == null){
+                        currentHolder = holder;
+                        currentModel = ost;
+                        //PLAY MUSIC
+                        SoundPlayerHelper.getInstance().PlayOst(getPathFile(ost.getNameFile()));
+                    }else{
+                        // SIGNIFICA QUE HAY ALGO REPRODUCIENDOSE
+                        /* HAY 2 POSIBILIDADES
+                                    1- ES EL MISMO SONIDO -> SOLO SE PARA LA MUSICA, SE CAMBIA EL ICONO Y SE LIBERA MEMORIA
+                                    2- ES OTRO -> HAY QUE PARAR ESE OTRO Y PONER A REPRODUCIR EL ACTUAL
+                        */
+                        //Play(holder);
+                        SoundPlayerHelper.getInstance().StopMusic();
+                        if(isTheCurrentSound(ost)){
+                            currentModel = null;
+                            currentHolder = null;
+                        }else{
+                            //CHANGE CURRENTHOLDER
+                            currentHolder.ChangePlaying();
+                            //SET CURRENT
+                            currentModel = ost;
+                            currentHolder = holder;
+                            //PLAY ACTUAL MUSICA
+                            SoundPlayerHelper.getInstance().PlayOst(getPathFile(ost.getNameFile()));
+                        }
+                    }
                 }
             }
         });
     }
 
-    private Boolean checkSound(String nameFile){
-        return IOHelper.checkExternalFile(UserPreferencesHelper.getNameFolderDownloads(context)
-                + "/" + folderOst + "/" + nameFile);
+    private String getFolderPath(){
+        return UserPreferencesHelper.getNameFolderDownloads(context) + "/" + folderOst + "/";
     }
 
-    private void Play(){
+    private String getPathFile(String nameFile){
+        return getFolderPath() + nameFile;
+    }
+
+    private Boolean checkSound(String nameFile){
+        return IOHelper.checkExternalFile(getPathFile(nameFile));
+    }
+
+    private Boolean isTheCurrentSound(SoundModel soundModel){
+        if(soundModel.getUrl().equals(currentModel.getUrl())){
+            return  true;
+        }
+        return false;
+    }
+
+    private void Play(SoundHolder soundHolder){
         //todo
     }
 
-    private void DownloadFile(String value){
-        Toast.makeText(context, value,Toast.LENGTH_SHORT).show();
+    private void DownloadFile(SoundHolder holder, String pathfile, SoundModel soundModel){
+        DownloaderHelper.getInstance(context).DownloadMusic(holder, pathfile, soundModel);
     }
 
     @Override
@@ -93,12 +133,35 @@ public class ItemSoundAdapter extends RecyclerView.Adapter<ItemSoundAdapter.Soun
         TextView name;
         TextView information;
         FloatingActionButton btn;
+        public boolean isPlaying;
 
         public SoundHolder(@NonNull View itemView) {
             super(itemView);
             this.name = (TextView) itemView.findViewById(R.id.nameSound);
             this.information = (TextView) itemView.findViewById(R.id.informationSound);
             this.btn = (FloatingActionButton) itemView.findViewById(R.id.btnSound);
+            this.isPlaying = false;
+        }
+
+        public void UpdateIconDownload(boolean value){
+            if(value){
+                this.btn.setImageResource(R.drawable.baseline_play_arrow_white_48dp);
+            }else{
+                this.btn.setImageResource(R.drawable.baseline_get_app_white_48dp);
+            }
+        }
+
+        public void ChangePlaying(){
+            this.isPlaying = !this.isPlaying;
+            UpdateIconPlaying(this.isPlaying);
+        }
+
+        public void UpdateIconPlaying(boolean value){
+            if(value){
+                this.btn.setImageResource(R.drawable.baseline_stop_white_48dp);
+            }else{
+                this.btn.setImageResource(R.drawable.baseline_play_arrow_white_48dp);
+            }
         }
     }
 }

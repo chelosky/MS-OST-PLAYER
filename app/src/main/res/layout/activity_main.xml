@@ -22,47 +22,6 @@
         android:id="@+id/btnDev"
         />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="SITENAME"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textSize="50sp"
-        android:textColor="@color/white1"
-        android:id="@+id/txtSiteName"/>
-
-    <Button
-        android:id="@+id/btnDownload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DOWNLOAD"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="120dp"
-        android:layout_toRightOf="@+id/btnDev"
-        />
-
-    <Button
-        android:id="@+id/bntPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PLAY"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
-        android:layout_toRightOf="@+id/btnDev"/>
-
-    <Button
-        android:id="@+id/bntSite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SITE"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
-        android:layout_marginRight="20dp"
-        android:layout_toLeftOf="@+id/btnDev"/>
-
-
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

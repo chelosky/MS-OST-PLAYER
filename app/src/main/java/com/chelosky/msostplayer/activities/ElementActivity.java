@@ -10,7 +10,6 @@ import android.view.animation.LayoutAnimationController;
 
 import com.chelosky.msostplayer.R;
 import com.chelosky.msostplayer.adapter.ItemSoundAdapter;
-import com.chelosky.msostplayer.helpers.ConfigurationHelper;
 import com.chelosky.msostplayer.helpers.DataHelper;
 import com.chelosky.msostplayer.models.SoundModel;
 
