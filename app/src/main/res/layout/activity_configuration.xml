@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/gray2"
     tools:context=".activities.ConfigurationActivity">
-
     <ImageView
         android:layout_marginTop="100dp"
         android:id="@+id/logoSetting"
@@ -24,6 +23,14 @@
         android:text="General Settings"
         android:textColor="@color/green3"
         android:textSize="20dp"/>
+    <View
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/txtSetting"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ffffff"/>
     <LinearLayout
         android:layout_below="@id/txtSetting"
         android:id="@+id/txtNameFolder"
@@ -102,10 +109,41 @@
                 android:layout_centerVertical="true" />
         </RelativeLayout>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/formDelete"
+        android:layout_below="@id/formSound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:layout_margin="10dp">
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/baseline_delete_forever_white_48dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Delete All Sounds"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:textSize="20dp"/>
+    </LinearLayout>
+    <View
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/formDelete"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ffffff"/>
     <Button
         android:id="@+id/btnSavePreferences"
-        android:layout_marginTop="25dp"
-        android:layout_below="@+id/formSound"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/formDelete"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

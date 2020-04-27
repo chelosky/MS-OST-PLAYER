@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.chelosky.msostplayer.activities.MenuActivity;
+import com.chelosky.msostplayer.activities.SplashActivity;
 import com.chelosky.msostplayer.models.ItemMainModel;
 import com.chelosky.msostplayer.models.SoundModel;
 import com.google.gson.Gson;
@@ -61,18 +62,25 @@ public class DataHelper extends Application {
             mypDialog.setMessage(MSG_GET_INFO);
             mypDialog.setCanceledOnTouchOutside(false);
             mypDialog.show();
+            Log.d("CHELO","iniciando la wea");
         }
 
         @Override
         protected String doInBackground(String... strings) {
             try{
+                Log.d("CHELO","descargando la wea");
                 downloadJsonFile();
-                String jsonString = transformIntoTxt();
-                IOHelper.writeJson(mContext,FILE_DB_NAME, jsonString);
             }catch (Exception e){
                 Log.e("Error: ", e.getMessage());
             }
             return null;
+        }
+
+        private void setInfodb() throws Exception {
+            Log.d("CHELO","trasnformando a txt");
+            String jsonString = transformIntoTxt();
+            Log.d("CHELO","escribiendo txt");
+            IOHelper.writeJson(mContext,FILE_DB_NAME, jsonString);
         }
 
         private String transformIntoTxt() throws Exception{
@@ -110,6 +118,7 @@ public class DataHelper extends Application {
             // closing streams
             output.close();
             input.close();
+            setInfodb();
         }
 
         @Override
@@ -117,6 +126,8 @@ public class DataHelper extends Application {
             super.onPostExecute(s);
             // CIERRA EL DIALOG
             mypDialog.cancel();
+            Log.d("CHELO","cerrar la wea");
+            ((SplashActivity)mContext).goToMain();
         }
     }
 
@@ -136,6 +147,8 @@ public class DataHelper extends Application {
             }
             return listGames;
         }catch (Exception e){
+            Log.d("CHELO",e.getMessage());
+            Log.d("CHELO","SE CAYO LA WEA");
             Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
             return null;
         }

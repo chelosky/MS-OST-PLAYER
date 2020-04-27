@@ -54,7 +54,20 @@ public class ItemSoundAdapter extends RecyclerView.Adapter<ItemSoundAdapter.Soun
             holder.name.setTextSize(15);
         }
         holder.information.setText(soundModel.getInformation());
-        holder.UpdateIconDownload(checkSound(soundModel.getNameFile()));
+        if (checkSound(soundModel.getNameFile())){
+            if(SoundPlayerHelper.getInstance().IsPlayingMediaPlayer()){
+                if(isTheCurrentSound(soundModel)){
+                    holder.isPlaying = true;
+                    holder.UpdateIconPlaying(true);
+                }else{
+                    holder.UpdateIconDownload(true);
+                }
+            }else{
+                holder.UpdateIconDownload(true);
+            }
+        }else{
+            holder.UpdateIconDownload(false);
+        }
         holder.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,10 +126,6 @@ public class ItemSoundAdapter extends RecyclerView.Adapter<ItemSoundAdapter.Soun
             return  true;
         }
         return false;
-    }
-
-    private void Play(SoundHolder soundHolder){
-        //todo
     }
 
     private void DownloadFile(SoundHolder holder, String pathfile, SoundModel soundModel){

@@ -1,5 +1,6 @@
 package com.chelosky.msostplayer.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -12,6 +13,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -38,22 +40,19 @@ public class MenuActivity extends AppCompatActivity {
     SoundPool soundPool;
     private int soundSelected;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        isStoragePermissionGranted();
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         modelList = new ArrayList<>();
         modelList = DataHelper.getGameItems(this);
         adapter = new itemMainAdapter(this, modelList);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
         LayoutAnimationController layoutAnimationController = null;
         layoutAnimationController = AnimationUtils.loadLayoutAnimation(this,  R.anim.layout_fall_down);
         viewPager.setLayoutAnimation(layoutAnimationController);
-        viewPager.setAdapter(adapter);
         viewPager.setPadding(130,0,130,0);
-
         colors = new Integer[]{
                 getResources().getColor(R.color.color1),
                 getResources().getColor(R.color.color2),
@@ -65,19 +64,6 @@ public class MenuActivity extends AppCompatActivity {
                 getResources().getColor(R.color.color2),
                 getResources().getColor(R.color.color3)
         };
-
-
-        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,1);
-        soundSelected = soundPool.load(this, R.raw.selected_gun,1);
-        FloatingActionButton btnDev = (FloatingActionButton)findViewById(R.id.btnDev);
-        btnDev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, ConfigurationActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
-            }
-        });
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -100,39 +86,18 @@ public class MenuActivity extends AppCompatActivity {
 
             }
         });
-
-        DataHelper.getOstInformation(this);
-    }
-
-    /**
-     * COPY-PASTE > just request permission for writ in the external storage of the phone
-     * @return
-     */
-    public  boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                ///Log.v(TAG,"Permission is granted");
-            } else {
-                //Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC,1);
+        soundSelected = soundPool.load(this, R.raw.selected_gun,1);
+        FloatingActionButton btnDev = (FloatingActionButton)findViewById(R.id.btnDev);
+        btnDev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, ConfigurationActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
             }
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                ///Log.v(TAG,"Permission is granted");
-                return true;
-            } else {
-                //Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            //Log.v(TAG,"Permission is granted");
-            return true;
-        }
+        });
     }
-
     public void OpenElementOst(int position, ItemMainModel itemMainModel){
         if(position == viewPager.getCurrentItem()){
             if(UserPreferencesHelper.getSoundEffectApp(this)){
@@ -151,6 +116,8 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        SoundPlayerHelper.getInstance().StopProgationSound();
+        SoundPlayerHelper.getInstance().StopPropagationSound();
     }
+
+
 }

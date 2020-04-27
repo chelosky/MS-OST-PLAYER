@@ -1,12 +1,17 @@
 package com.chelosky.msostplayer.helpers;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.File;
 
 public class UserPreferencesHelper {
     public static final String USER_PREFS = "userPreferences.txt";
@@ -65,6 +70,34 @@ public class UserPreferencesHelper {
         }catch (Exception e){
             Log.d("CHELO", e.getMessage());
             return false;
+        }
+    }
+
+    private static void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+
+        fileOrDirectory.delete();
+    }
+
+    public static void deleteAllSounds(Context context){
+        ProgressDialog mypDialog = new ProgressDialog(context);
+        try {
+            mypDialog.setTitle("Delete all Sounds");
+            mypDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mypDialog.setMessage("Just wait...");
+            mypDialog.setCanceledOnTouchOutside(false);
+            mypDialog.show();
+            String path = getNameFolderDownloads(context);
+            File dir = new File(Environment.getExternalStorageDirectory() + "/"  + path);
+            deleteRecursive(dir);
+            Toast.makeText(context, "Sounds Removed", Toast.LENGTH_SHORT).show();
+            mypDialog.dismiss();
+        }catch (Exception e){
+            Log.d("CHELO", e.getMessage());
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            mypDialog.dismiss();
         }
     }
 

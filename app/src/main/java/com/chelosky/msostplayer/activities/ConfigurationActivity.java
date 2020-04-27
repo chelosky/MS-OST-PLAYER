@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ public class ConfigurationActivity extends AppCompatActivity {
     TextView txtSwitchSound;
     Switch switchSound;
     Button btnSavePreferences;
+    LinearLayout formDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,17 @@ public class ConfigurationActivity extends AppCompatActivity {
                 updateTextSwitch();
             }
         });
+        formDelete = (LinearLayout) findViewById(R.id.formDelete);
+        formDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removedAllSounds();
+            }
+        });
+    }
+
+    private void removedAllSounds(){
+        UserPreferencesHelper.deleteAllSounds(this);
     }
 
     private void saveInformation(){

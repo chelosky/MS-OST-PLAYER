@@ -36,8 +36,13 @@ public class SoundPlayerHelper {
         this.mediaPlayer = new MediaPlayer();
     }
 
-    public void StopProgationSound(){
-        if(mediaPlayer.isPlaying()){
+
+    public boolean IsPlayingMediaPlayer(){
+        return mediaPlayer.isPlaying();
+    }
+
+    public void StopPropagationSound(){
+        if(IsPlayingMediaPlayer()){
             StopMusic();
         }
     }
